@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region スコア
-    int totalScore = 0;
-    public int TotalScore { get { return totalScore; } }
+    static int totalScore = 0;
+    static public int TotalScore { get { return totalScore; } }
     #endregion
 
     #region コンボ関連
@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+        totalScore = 0;
     }
 
     private void Start()
