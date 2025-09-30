@@ -1,10 +1,11 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Item : MonoBehaviour
 {
     [SerializeField] public int score = 100;
     [SerializeField] Rigidbody rb;
-    [SerializeField] float speed = 5f;
+    [SerializeField] float speed = 8f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,11 +21,18 @@ public class Item : MonoBehaviour
         var y2 = Random.Range(0, 50f);
         var z = Random.Range(0, 50f);
         rb.AddTorque(new Vector3(x2,y2,z));
+
+        transform.DOScale(2.2f, 1f);
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "DeadZone") Destroy(gameObject);
     }
 }

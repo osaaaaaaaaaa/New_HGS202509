@@ -66,6 +66,9 @@ public class GameManager : MonoBehaviour
             uiManager.UpdateTimer(currentTime);
             yield return new WaitForSeconds(waitSec);
         }
+
+        currentTime = 0;
+        uiManager.UpdateTimer(currentTime);
         EndGame();
     }
 

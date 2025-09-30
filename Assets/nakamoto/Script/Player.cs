@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     bool isDead = false;
     bool isShot = true;
     bool isBack = false;
+    float plScale = 0.75f;
     float time = 0f;
 
     // 外部設定
@@ -22,6 +23,11 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject arrowObj;
     [SerializeField] float shootingSensation = 0.2f;
     [SerializeField] float bulletSpeed = 20f;
+
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip eatSE;
+    [SerializeField] AudioClip hitSE;
+    [SerializeField] AudioClip moveSE;
 
     // 定数
     const float MOVE_SPEED = 500f;
@@ -34,6 +40,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         arrowObj.SetActive(false);
+        transform.localScale = new Vector3(plScale, plScale, plScale);  
     }
 
     // Update is called once per frame
@@ -81,6 +88,7 @@ public class Player : MonoBehaviour
 
             if (Input.GetButtonDown("Shot") && isShot || Input.GetMouseButtonDown(0) && isShot)
             {
+                audioSource.PlayOneShot(moveSE);
                 isShot = false; // 連射防止
                 rb.linearVelocity = Vector3.zero; // 速度をリセット
                 rb.angularVelocity = Vector3.zero; // 回転速度をリセット
@@ -88,6 +96,7 @@ public class Player : MonoBehaviour
             }
             else if(Input.GetButtonDown("Shot") && !isShot && !isBack || Input.GetMouseButtonDown(0) && !isShot && !isBack)
             {
+                audioSource.PlayOneShot(moveSE);
                 isBack = true;
                 rb.linearVelocity = Vector3.zero; // 速度をリセット
                 rb.angularVelocity = Vector3.zero; // 回転速度をリセット
@@ -129,6 +138,10 @@ public class Player : MonoBehaviour
         else
             itemCount = itemCount / 2; // アイテムを半分失う
 
+        plScale = 0.75f;
+
+        transform.localScale = new Vector3(plScale, plScale, plScale);
+
         GameManager.Instance.DisplayItemCnt(itemCount);
     }
 
@@ -147,8 +160,23 @@ public class Player : MonoBehaviour
             isShot = true;
         }
 
-        if(other.tag == "Item")
+        if (other.tag == "DeadZone")
         {
+            // ゲームオーバー演出
+            GameManager.Instance.EndGame();
+        }
+
+        if (other.tag == "Item")
+        {
+            if(plScale <= 1.25f)
+                plScale += 0.03f; // プレイヤーの大きさを増やす
+            else
+                plScale = 1.25f;
+
+            transform.localScale = new Vector3(plScale, plScale, plScale);
+
+            audioSource.PlayOneShot(eatSE);
+
             itemCount++;
 
             GameManager.Instance.DisplayItemCnt(itemCount); // アイテム数表示更新
@@ -164,6 +192,7 @@ public class Player : MonoBehaviour
     {
         if(collision.gameObject.tag == "Object")
         {
+            audioSource.PlayOneShot(hitSE);
             HitObj();
         }
     }

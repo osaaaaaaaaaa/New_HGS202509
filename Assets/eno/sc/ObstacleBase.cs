@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ObstacleBase : MonoBehaviour
 {
@@ -17,10 +18,17 @@ public class ObstacleBase : MonoBehaviour
     [SerializeField]
     int hp = 5;
 
+    [SerializeField]
+    AudioSource audioSource;
+
+    [SerializeField]
+    AudioClip hitSE;
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Bullet")
         {
+            audioSource.PlayOneShot(hitSE);
             hp--;
             if (hp <= 0)
             {
