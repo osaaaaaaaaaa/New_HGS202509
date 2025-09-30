@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class ResultManager : MonoBehaviour
 {
     [SerializeField]
+    GameObject rankingSet;
+
+    [SerializeField]
     List<Text> ranks = new List<Text>();
 
     [SerializeField]
@@ -15,9 +18,42 @@ public class ResultManager : MonoBehaviour
     static List<int> hightScores = new List<int>();
     bool isRankin = false;
 
-    private void Awake()
+    [SerializeField]
+    GameObject selfScoreSet;
+
+    [SerializeField]
+    Text selfScoreText;
+
+    [SerializeField]
+    GameObject playerHead;
+
+    [SerializeField]
+    Animator playerAnim;
+
+    [SerializeField]
+    AudioSource audio;
+
+    private void Start()
     {
-        if(hightScores.Count == 0)
+        playerHead.transform.localScale = GameManager.playerScale;
+        Invoke("ShowSelfScore", 2);
+        Invoke("ShowRanking", 4f);
+    }
+
+    void ShowSelfScore()
+    {
+        selfScoreText.gameObject.SetActive(true);
+        selfScoreText.text = GameManager.TotalScore.ToString();
+        audio.Play();
+    }
+
+    void ShowRanking()
+    {
+        audio.Play();
+        selfScoreSet.SetActive(false);
+        rankingSet.SetActive(true);
+        playerAnim.gameObject.SetActive(false);
+        if (hightScores.Count == 0)
         {
             hightScores.Add(0);
             hightScores.Add(0);
@@ -29,10 +65,10 @@ public class ResultManager : MonoBehaviour
 
         hightScores = hightScores.OrderByDescending(i => i).ToList();
         hightScores.RemoveAt(hightScores.Count - 1);
-        if(hightScores.Contains(GameManager.TotalScore)) isRankin = true;
+        if (hightScores.Contains(GameManager.TotalScore)) isRankin = true;
 
         UpdateRanking();
-        Invoke("ChangeTitleScene", 5f);
+        Invoke("ChangeTitleScene", 4f);
     }
 
     private void ChangeTitleScene()
