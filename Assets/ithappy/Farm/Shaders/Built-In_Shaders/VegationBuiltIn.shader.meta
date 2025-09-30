@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: e13e1dfc2c7c2cf419092925f2bde791
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225231
+  packageName: Farm - Low Poly Asset Pack by ithappy
+  packageVersion: 1.1
+  assetPath: Assets/ithappy/Farm/Shaders/Built-In_Shaders/VegationBuiltIn.shader
+  uploadId: 716060

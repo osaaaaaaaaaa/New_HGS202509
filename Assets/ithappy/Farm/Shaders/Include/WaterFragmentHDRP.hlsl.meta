@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e4f435fcf80227e489ac892925ec27d7
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225231
+  packageName: Farm - Low Poly Asset Pack by ithappy
+  packageVersion: 1.1
+  assetPath: Assets/ithappy/Farm/Shaders/Include/WaterFragmentHDRP.hlsl
+  uploadId: 716060
