@@ -6,13 +6,27 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    #region オブジェクト生成関連
+    #region 生成関連
 
+    #region オブジェクト
     [SerializeField]
-    float spawnInterval = 0;
+    float spawnObstacleIntervalMin = 0.5f;
+    [SerializeField]
+    float spawnObstacleIntervalMax = 2f;
 
     [SerializeField] 
     List<GameObject> obstaclePrefabs = new List<GameObject>();
+    #endregion
+
+    #region チェックポイント
+    [SerializeField]
+    float spawnPointIntervalMin = 0.5f;
+    [SerializeField]
+    float spawnPointIntervalMax = 2f;
+
+    [SerializeField]
+    GameObject pointPrefab;
+    #endregion
 
     [SerializeField]
     Transform stageParent;
@@ -30,18 +44,31 @@ public class StageManager : MonoBehaviour
     }
     Dictionary<GameObject, SpawnPoint> spawnedObjs = new Dictionary<GameObject, SpawnPoint>();
 
-    const int spawnCntMax = 6;
+    const int spawnCntMax = 4;
     const int spawnCntMin = 0;
     #endregion
 
     public void StartSpawnObstacles()
     {
         StartCoroutine(SpawnObstaclesCoroutine());
+        StartCoroutine(SpawnPointCoroutine());
     }
 
     public void StopSpawnObstacles()
     {
         StopCoroutine(SpawnObstaclesCoroutine());
+        StopCoroutine(SpawnPointCoroutine());
+    }
+
+    IEnumerator SpawnPointCoroutine()
+    {
+        while (true)
+        {
+            var pos = GetGeeneratePos();
+            var obj = Instantiate(pointPrefab, pos, Quaternion.identity);
+            obj.transform.parent = stageParent;
+            yield return new WaitForSeconds(UnityEngine.Random.Range(spawnPointIntervalMin, spawnPointIntervalMax));
+        }
     }
 
     IEnumerator SpawnObstaclesCoroutine()
@@ -49,7 +76,7 @@ public class StageManager : MonoBehaviour
         while (true)
         {
             SpawnObstacles(UnityEngine.Random.Range(spawnCntMin, spawnCntMax));
-            yield return new WaitForSeconds(spawnInterval);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(spawnObstacleIntervalMin, spawnObstacleIntervalMax));
         }
     }
 
