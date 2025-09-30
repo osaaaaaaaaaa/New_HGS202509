@@ -16,6 +16,7 @@ public class Tutorial : MonoBehaviour
 
     public void NextButton()
     {
+        Initiate.DoneFading();
         Initiate.Fade("Game",Color.black,1.0f);
     }
 }

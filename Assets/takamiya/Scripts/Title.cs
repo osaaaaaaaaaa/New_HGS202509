@@ -16,6 +16,7 @@ public class Title : MonoBehaviour
 
     public void StartButton()
     {
+        Initiate.DoneFading();
         Initiate.Fade("Tutorial",Color.black,1.0f);
     }
 }

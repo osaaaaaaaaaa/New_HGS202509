@@ -26,7 +26,7 @@ public class ObstacleBase : MonoBehaviour
             {
                 for (var i = 0; i < dropItemCnt; i++)
                 {
-                    Instantiate(dropItemObjs[Random.Range(0, dropItemObjs.Length)], transform.position + new Vector3(Random.Range(-1f, 1f), 1, Random.Range(-1f, 1f)), Quaternion.identity);
+                    Instantiate(dropItemObjs[UnityEngine.Random.Range(0, dropItemObjs.Length)], transform.position + new Vector3(UnityEngine.Random.Range(-1f, 1f), 1, UnityEngine.Random.Range(-1f, 1f)), Quaternion.identity);
                 }
 
                 Destroy(gameObject);

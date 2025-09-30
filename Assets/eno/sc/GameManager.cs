@@ -90,6 +90,13 @@ public class GameManager : MonoBehaviour
         uiManager.SetGameEndTextVisible(true);
 
         // 数秒後にリザルトシーン遷移
+        Invoke("ChangeResultScene", 2f);
+    }
+
+    void ChangeResultScene()
+    {
+        Initiate.DoneFading();
+        Initiate.Fade("Result", Color.black, 1.0f);
     }
 
     /// <summary>
