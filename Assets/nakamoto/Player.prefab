@@ -330,5 +330,6 @@ MonoBehaviour:
   rb: {fileID: 467448554943758906}
   shotPoint: {fileID: 0}
   bulletObj: {fileID: 3012523637290953390, guid: 6b6338d9f7682ae41ba5c031a5e697ae, type: 3}
+  arrowObj: {fileID: 1315752147765480827}
   shootingSensation: 0.1
   bulletSpeed: 20
