@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/takamiya/Scene/Tutorial.unity
     guid: 3e57260d73c304b4ca38b7003df086e8
   - enabled: 1
+    path: Assets/takamiya/Scene/Tutorial2.unity
+    guid: b55bc2da7ba334b4aaa0a2497f23b54c
+  - enabled: 1
     path: Assets/eno/Game.unity
     guid: 7244b7ab95973364891d7de494059bdc
   - enabled: 1
