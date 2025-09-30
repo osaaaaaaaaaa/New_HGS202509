@@ -4502,6 +4502,7 @@ MonoBehaviour:
   camManeger: {fileID: 309841107}
   isStartGame: 0
   isEndGame: 0
+  player: {fileID: 7613965610375426723}
 --- !u!82 &1866467837
 AudioSource:
   m_ObjectHideFlags: 0
