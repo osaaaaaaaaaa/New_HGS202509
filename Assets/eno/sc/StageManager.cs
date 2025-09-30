@@ -15,6 +15,9 @@ public class StageManager : MonoBehaviour
     List<GameObject> obstaclePrefabs = new List<GameObject>();
 
     [SerializeField]
+    Transform stageParent;
+
+    [SerializeField]
     Transform spawnTopLeft;
 
     [SerializeField]
@@ -34,6 +37,11 @@ public class StageManager : MonoBehaviour
     public void StartSpawnObstacles()
     {
         StartCoroutine(SpawnObstaclesCoroutine());
+    }
+
+    public void StopSpawnObstacles()
+    {
+        StopCoroutine(SpawnObstaclesCoroutine());
     }
 
     IEnumerator SpawnObstaclesCoroutine()
@@ -58,7 +66,8 @@ public class StageManager : MonoBehaviour
             UnityEngine.Random.InitState(DateTime.Now.Millisecond);
             int rndPick = UnityEngine.Random.Range(0, obstaclePrefabs.Count);
             Vector3 pos = GetGeeneratePos();
-            Instantiate(obstaclePrefabs[rndPick], pos, Quaternion.identity);
+            GameObject obj = Instantiate(obstaclePrefabs[rndPick], pos, Quaternion.identity);
+            obj.transform.parent = stageParent;
         }
     }
 }

@@ -5,11 +5,19 @@ public class ObstacleBase : MonoBehaviour
     [SerializeField]
     float dropItemCnt;
 
+    [SerializeField]
+    int hp = 5;
+
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Default")
+        if(other.gameObject.tag == "DeadZone") Destroy(gameObject);
+        if(other.gameObject.tag == "Bullet")
         {
-            Destroy(gameObject);
+            hp--;
+            if (hp <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

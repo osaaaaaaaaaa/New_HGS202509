@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     StageManager stageManager;
 
+    [SerializeField]
+    CameraManeger camManeger;
+
     #region 状態管理
     const float GameTime = 60f;
     float currentTime = 60;
@@ -51,7 +54,8 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator TimerCoroutine()
     {
-        yield return new WaitForSeconds(2f);
+        uiManager.ShowGameCountDownText();
+        yield return new WaitForSeconds(2.5f);
         StartGame();
 
         const float waitSec = 0.1f;
@@ -71,6 +75,7 @@ public class GameManager : MonoBehaviour
     {
         isStartGame = true;
         stageManager.StartSpawnObstacles();
+        camManeger.Startmove();
     }
 
     /// <summary>
@@ -79,7 +84,11 @@ public class GameManager : MonoBehaviour
     void EndGame()
     {
         isEndGame = true;
-        // リザルトシーン遷移
+        camManeger.StopMove();
+        stageManager.StopSpawnObstacles();
+        uiManager.SetGameEndTextVisible(true);
+
+        // 数秒後にリザルトシーン遷移
     }
 
     /// <summary>
@@ -90,6 +99,8 @@ public class GameManager : MonoBehaviour
     {
         totalScore += addValue;
         if(totalScore <= 0) totalScore = 0;
+
+        uiManager.UpdateTotalScoreText(totalScore);
     }
 
     /// <summary>
@@ -99,5 +110,7 @@ public class GameManager : MonoBehaviour
     {
         currentCombo += addValue;
         if(currentCombo <= 0) currentCombo = 0;
+
+        uiManager.UpdateComboText(currentCombo);
     }
 }
