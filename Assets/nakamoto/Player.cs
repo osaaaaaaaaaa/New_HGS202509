@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
 
     // 変数
     int itemCount = 0;
+    public int ItemCount { get { return itemCount; } set { itemCount = value; } }
+
     bool isDead = false;
     bool isShot = true;
     bool isBack = false;
@@ -17,11 +19,13 @@ public class Player : MonoBehaviour
     [SerializeField] Rigidbody rb;
     [SerializeField] Transform shotPoint;
     [SerializeField] GameObject bulletObj;
+    [SerializeField] GameObject arrowObj;
     [SerializeField] float shootingSensation = 0.2f;
     [SerializeField] float bulletSpeed = 20f;
 
     // 定数
     const float MOVE_SPEED = 500f;
+    const float ROTATE_SPEED = 20f;
 
     //----------------------
     // メソッド
@@ -29,7 +33,7 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        arrowObj.SetActive(false);
     }
 
     // Update is called once per frame
@@ -64,8 +68,14 @@ public class Player : MonoBehaviour
         // スティック入力時
         if (h1 != 0 || v1 != 0)
         {
+            arrowObj.SetActive(true);
             var direction = new Vector3(h1, v1, 0);
-            transform.localRotation = Quaternion.LookRotation(direction);   // 向きを変える
+
+            // ベクトルから回転を作成（forward を XY 平面に対応させる）
+            Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, direction);
+
+            // スムーズに向きを変える
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, ROTATE_SPEED * Time.deltaTime);
 
             var vector = direction.normalized;
 
@@ -73,17 +83,24 @@ public class Player : MonoBehaviour
             {
                 isShot = false; // 連射防止
                 rb.linearVelocity = Vector3.zero; // 速度をリセット
+                rb.angularVelocity = Vector3.zero; // 回転速度をリセット
                 rb.AddForce(vector * MOVE_SPEED); // 力を加える
             }
             else if(Input.GetButtonDown("Shot") && !isShot && !isBack)
             {
                 isBack = true;
                 rb.linearVelocity = Vector3.zero; // 速度をリセット
+                rb.angularVelocity = Vector3.zero; // 回転速度をリセット
+
                 this.transform.DOLocalMove(shotPoint.position, 1).OnComplete(() => {
                     isShot = true; // 移動完了後に撃てるようにする
                     isBack = false;
                 });
             }
+        }
+        else
+        {
+            arrowObj.SetActive(false);
         }
     }
 
@@ -97,7 +114,8 @@ public class Player : MonoBehaviour
             isDead = true;
             rb.linearVelocity = Vector3.zero;
 
-            // ゲームオーバー演出
+            //++ ゲームオーバー演出
+
 
             return;
         }
@@ -128,11 +146,13 @@ public class Player : MonoBehaviour
             isShot = true;
         }
 
-        if(other.tag == "Food")
+        if(other.tag == "Item")
         {
             itemCount++;
 
             //+++++ スコア加算処理 (itemCount * foodObjのスコア)
+
+            Destroy(other.gameObject); // アイテムを消す
         }
     }
 
