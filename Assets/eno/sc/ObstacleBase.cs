@@ -1,7 +1,13 @@
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ObstacleBase : MonoBehaviour
 {
+    [SerializeField]
+    List<GameObject> itemPrefabs = new List<GameObject>();
+
     [SerializeField]
     float dropItemCnt;
 
@@ -18,6 +24,16 @@ public class ObstacleBase : MonoBehaviour
             {
                 Destroy(gameObject);
             }
+        }
+    }
+
+    void SpawnItems()
+    {
+        for(int i = 0; i < dropItemCnt; i++)
+        {
+            UnityEngine.Random.InitState(DateTime.Now.Millisecond);
+            int rnd = UnityEngine.Random.Range(0, itemPrefabs.Count);
+            Instantiate(itemPrefabs[rnd], transform.position, Quaternion.identity);
         }
     }
 }
