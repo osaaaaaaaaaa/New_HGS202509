@@ -1,4 +1,6 @@
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Bullet : MonoBehaviour
 {
@@ -24,7 +26,11 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "DeadZone") Destroy(gameObject);
-        if (other.gameObject.tag == "Obstacle")
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Object")
         {
             Destroy(gameObject);
         }
