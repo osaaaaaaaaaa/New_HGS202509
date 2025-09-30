@@ -26,13 +26,18 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region スコア
-    static int totalScore = 0;
+    static public int totalScore = 0;
     static public int TotalScore { get { return totalScore; } }
     #endregion
 
     #region コンボ関連
     int currentItem = 0;
     public int CurrentItem { get { return currentItem; } }
+    #endregion
+
+    #region プレイヤー
+    [SerializeField] GameObject player;
+    static public Vector3 playerScale = Vector3.one;
     #endregion
 
     private void Awake()
@@ -42,6 +47,7 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
         totalScore = 0;
+        playerScale = Vector3.one;
     }
 
     private void Start()
@@ -91,6 +97,8 @@ public class GameManager : MonoBehaviour
         camManeger.StopMove();
         stageManager.StopSpawnObstacles();
         uiManager.SetGameEndTextVisible(true);
+
+        playerScale = player.transform.localScale;
 
         // 数秒後にリザルトシーン遷移
         Invoke("ChangeResultScene", 2f);
