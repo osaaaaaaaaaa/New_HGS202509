@@ -16,8 +16,8 @@ public class GameManager : MonoBehaviour
     #region 状態管理
     const float GameTime = 60f;
     float currentTime = 60;
-    bool isStartGame = false;
-    bool isEndGame = false;
+    public bool isStartGame = false;
+    public bool isEndGame = false;
     #endregion
 
     #region シングルトン
@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region コンボ関連
-    int currentCombo = 0;
-    public int CurrentCombo { get { return currentCombo; } }
+    int currentItem = 0;
+    public int CurrentItem { get { return currentItem; } }
     #endregion
 
     private void Awake()
@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// ゲーム終了
     /// </summary>
-    void EndGame()
+    public void EndGame()
     {
         isEndGame = true;
         camManeger.StopMove();
@@ -106,11 +106,10 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// コンボ加算
     /// </summary>
-    public void AddCombo(int addValue)
+    public void DisplayItemCnt(int itemCnt)
     {
-        currentCombo += addValue;
-        if(currentCombo <= 0) currentCombo = 0;
+        currentItem = itemCnt;
 
-        uiManager.UpdateComboText(currentCombo);
+        uiManager.UpdateComboText(currentItem);
     }
 }

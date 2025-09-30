@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isDead) return; // 死亡していたら処理しない
+        if (!GameManager.Instance.isStartGame || GameManager.Instance.isEndGame) return; // 死亡していたら処理しない
 
         // 入力を取得
         var v1 = Input.GetAxis("Vertical");
@@ -79,14 +79,14 @@ public class Player : MonoBehaviour
 
             var vector = direction.normalized;
 
-            if (Input.GetButtonDown("Shot") && isShot)
+            if (Input.GetButtonDown("Shot") && isShot || Input.GetMouseButtonDown(0) && isShot)
             {
                 isShot = false; // 連射防止
                 rb.linearVelocity = Vector3.zero; // 速度をリセット
                 rb.angularVelocity = Vector3.zero; // 回転速度をリセット
                 rb.AddForce(vector * MOVE_SPEED); // 力を加える
             }
-            else if(Input.GetButtonDown("Shot") && !isShot && !isBack)
+            else if(Input.GetButtonDown("Shot") && !isShot && !isBack || Input.GetMouseButtonDown(0) && !isShot && !isBack)
             {
                 isBack = true;
                 rb.linearVelocity = Vector3.zero; // 速度をリセット
@@ -111,11 +111,10 @@ public class Player : MonoBehaviour
     {
         if (itemCount <= 0)
         {
-            isDead = true;
             rb.linearVelocity = Vector3.zero;
 
-            //++ ゲームオーバー演出
-
+            // ゲームオーバー演出
+            GameManager.Instance.EndGame();
 
             return;
         }
@@ -129,6 +128,8 @@ public class Player : MonoBehaviour
             itemCount = 0;
         else
             itemCount = itemCount / 2; // アイテムを半分失う
+
+        GameManager.Instance.DisplayItemCnt(itemCount);
     }
 
     /// <summary>
@@ -150,7 +151,10 @@ public class Player : MonoBehaviour
         {
             itemCount++;
 
-            //+++++ スコア加算処理 (itemCount * foodObjのスコア)
+            GameManager.Instance.DisplayItemCnt(itemCount); // アイテム数表示更新
+
+            // スコア加算処理 (itemCount * foodObjのスコア)
+            GameManager.Instance.AddScore(other.GetComponent<Item>().score * itemCount);
 
             Destroy(other.gameObject); // アイテムを消す
         }
